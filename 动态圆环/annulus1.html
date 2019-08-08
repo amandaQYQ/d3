@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>annulus</title>
+</head>
+<body>
+  <div class="container"></div>
+  <script src="../lib/d3.v3.min.js"></script>
+  <script>
+    var width = 1920
+    var height = 1080
+    var svg = d3.select('.container')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+    var g2 = svg.append('g')
+      .attr('transform', 'translate(100, 100)')
+    var g = svg.append('g')
+      .attr('transform', 'translate(100, 100)')
+
+    var data = [
+      {
+        'name': '找回',
+        'value': 1000,
+      }, {
+        'name': '找回',
+        'value': 1200,
+      }, {
+        'name': '找回',
+        'value': 1500,
+      }, {
+        'name': '总计',
+        'value': 2000,
+      }
+    ]
+
+    var arc = d3.svg.arc()
+      .innerRadius(50)
+      .outerRadius(60)
+    
+    var pie = d3.layout.pie()
+        .startAngle(0)
+        .endAngle(Math.PI * 1)
+        .value(function(d){
+          // console.log(d.value)
+          // return d.value
+          console.log(d)
+          return d.value
+        })
+
+    var total = [data[3]]
+    console.log(total)
+    
+    var pie2 = d3.layout.pie()
+      .value(function(d){
+        console.log(d.value)
+        return d.value
+      })
+    var totalData = pie2(total)  
+    var finded = [data[0]]
+    var total = [data[3]]
+
+    console.log(finded)
+
+    var pieData = pie(finded)
+
+  g.selectAll('.a')
+      .data(pieData)
+      .enter()
+      .append('path') 
+      .attr('class', 'a')
+      .style('fill', 'red')
+      .attr('d', function(d) {
+        return arc({startAngle:d.startAngle, endAngle:d.endAngle})
+      })
+      .transition()
+      .duration(2000)
+      .attrTween('d', function(d, i, a) {
+        return function(t) {
+          var from = {
+            startAngle: d.startAngle,
+            endAngle: d.startAngle
+          } 
+          var to = {
+            startAngle: d.startAngle,
+            endAngle: d.endAngle
+          }
+          var inter = d3.interpolate(from, to)
+          return arc(inter(t))
+        }
+      })
+  g2.selectAll('.b')
+    .data(totalData)
+    .enter()
+    .append('path')
+    .attr('class', 'b')
+    .style('fill', 'green')
+    .attr('d', arc)
+
+
+  </script>
+</body>
+</html>

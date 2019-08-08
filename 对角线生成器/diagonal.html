@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>diagonal</title>
+</head>
+<body>
+  <div class="container"></div>
+  <script src="../lib/d3.v3.min.js"></script>
+  <script>
+    var width = 400
+    var height = 400
+
+    var dataset = {
+      source: {
+        x: 100,
+        y: 100
+      },
+      target: {
+        x: 300,
+        y: 200
+      }
+    }
+
+    var svg = d3.select('.container')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+
+    var diagonal = d3.svg.diagonal()
+
+    svg.append('path')
+      .attr('d', diagonal(dataset))
+      .attr('fill', 'none')
+      .attr('stroke', 'black')
+      .attr('stroke-width', 3)
+
+    var projection = d3.svg.diagonal()
+      .projection(function(d) {
+        var x = d.x * 1.5
+        var y = d.y * 1.5
+        return [x, y]
+      })
+
+    svg.append('path')
+      .attr('d', projection(dataset))
+      .attr('fill', 'none')
+      .attr('stroke', 'gray')
+      .attr('stroke-width', 3)
+
+  </script>
+</body>
+</html>

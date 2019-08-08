@@ -1,0 +1,137 @@
+// 初始化 svg 节点
+// ==============
+const [width, height] = [500, 500]
+const svg = d3.select('body').append('svg')
+  .attr('width', width)
+  .attr('height', height)
+  .style('border', '1px solid #000')
+
+// 定义数据
+// =======
+let dataset = [
+  ['重庆', 140],
+  ['北京', 120]
+]
+
+// 定义颜色生成器
+// ============
+const colors = d3.scale.category20()
+
+// 定义饼图布局生成器
+// ===============
+let pie = d3.layout.pie()
+  .value(d => d[1])
+  .sort(null)
+let piedata = pie(dataset)
+
+/**
+ * 初始化圆弧
+ */
+let update
+let enter
+let arcpath
+function initArc() {
+  // 定义圆弧路径生成器
+  // =================
+  const innerRadius = 0
+  const outerRadius = 150
+  arcpath = d3.svg.arc()
+    .innerRadius(innerRadius)
+    .outerRadius(outerRadius)
+
+  // 绘制圆弧
+  // ========
+  update = svg.selectAll('.arc').data(piedata)
+  enter = update.enter()
+
+  enter
+    .append('g')
+    .attr('class', 'arc')
+    .attr('transform', `translate(
+      ${width / 2} ${height / 2}
+    )`)
+    .append('path')
+    .attr('d', d => {
+      return arcpath({
+        startAngle: d.startAngle,
+        endAngle: d.startAngle
+      })
+    })
+    .attr('fill', (d, i) => colors(i))
+    .transition()
+    .duration(2000)
+    
+    .attrTween('d', (d, i, a) => {
+      return t => {
+        let from = {
+          startAngle: d.startAngle,
+          endAngle: d.startAngle
+        }
+        let to = {
+          startAngle: d.startAngle,
+          endAngle: d.endAngle
+        }
+        let inter = d3.interpolate(from, to)
+        return arcpath(inter(t))
+      }
+    })
+}
+
+/**
+ * 调用改变数据
+ * 并执行圆弧动画
+ */
+function updateArc() {
+  random()
+  let pieupdate = pie(dataset)
+
+  // * 我们改变了 dataset 的值，但还没对 piedata 作任何改变
+  // * 我们使用布局函数 pie 调用了新的 dataset，获得了更新后的布局数据
+  // * 因为此时的 piedata 保存的任然是上一次绘制的值，
+  //   所以我们将它的 startAngle 和 endAngle 分别赋值给 laststartAngle 和 lastendAngle
+  // * 最后将更新后的 pieupdate 的值传递给 piedata 的 startAngle 和 endAngle
+  for (let [i, d] of piedata.entries()) {
+    d.laststartAngle = d.startAngle
+    d.lastendAngle = d.endAngle
+
+    d.startAngle = pieupdate[i].startAngle
+    d.endAngle = pieupdate[i].endAngle
+  }
+
+  update
+    .select('path')
+    .attr('fill', (d, i) => colors(i))
+    .transition()
+    .duration(2000)
+    .attrTween('d', tweenArc((d, i) => {
+      return {
+        startAngle: d.laststartAngle,
+        endAngle: d.lastendAngle
+      }
+    }))
+}
+
+/**
+ * 随机改变 dataset 中的值
+ */
+function random() {
+  let n = dataset.length
+  while (n--) {
+    dataset[n][1] = Math.floor(Math.random() * 40 + 10)
+  }
+}
+
+/**
+ * 弧度变换函数
+ * @param {Object} b 
+ */
+function tweenArc(b) {
+  return function (a, i) {
+    let inter = d3.interpolate(b.call(this, a, i), a)
+    return function (t) {
+      return arcpath(inter(t));
+    };
+  };
+}
+
+initArc()

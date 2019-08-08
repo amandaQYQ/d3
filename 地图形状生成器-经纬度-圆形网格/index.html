@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <div id="container"></div>
+  <script src="./d3.v3.min.js"></script>
+  <script>
+    var width = 800
+    var height = 800
+    var svg = d3.select('#container')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+
+    // 创建一个等差数列
+    var angles = d3.range(0, 180, 5)
+    // 创建圆形网格生成器
+    var geocircle = d3.geo.circle()
+      .origin([77, -19])   // 中心点
+
+    var projection = d3.geo.mercator()
+      .center([0, 0])
+      .scale(60)
+      .translate([width / 2, height / 2])
+
+    var path = d3.geo.path()
+      .projection(projection)
+
+    svg.append('g')
+      .selectAll('.geocircle')
+      .data(angles)
+      .enter()
+      .append('path')
+      .attr('class', 'geocircle')
+      .attr('d', function(d) {
+        var circle = geocircle.angle(d)
+        return path(circle())
+      })
+      .attr("stroke", '#000')
+      .attr('stroke-width', 1)
+      .attr('fill', 'none')
+    d3.json('word.json',function(error, root) {
+      if(error)
+        return console.error(error)
+      console.log(root)
+
+      var groups = svg.append('g')
+        .attr('class', 'groups')
+      
+      var color = d3.scale.category20()
+
+      groups.selectAll('path')
+        .data(root.geometries)
+        .enter()
+        .append('path')
+        .attr('d', path)
+        .attr('class', 'county')
+        .style('fill', function(d, i) {
+          return color(i)
+        })
+    }) 
+  </script>
+  
+</body>
+</html>

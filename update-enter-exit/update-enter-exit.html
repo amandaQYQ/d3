@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>enter/update</title>
+</head>
+<body>
+  <div class="container">
+    <p></p>
+    <p></p>
+  </div>
+  <script src="lib/d3.v3.min.js"></script>
+  <script>
+    // 一
+    // var data = [4, 5, 6, 7, 8, 9]
+    // var con = d3.select('.container')
+    // var update = con.selectAll('p')
+    //   .data(data)
+
+    // var enter = update.enter()
+
+    // enter.append('p')
+    //   .text(function(d) {
+    //     return d
+    //   })                 
+    // enter是处理，当数组长度> 元素长度的时候，只负责添加，不修改原来的，
+    //所以页面上显示的就是
+    // <p></p>
+    // <p></p>
+    // <p>6</p>
+    // <p>7</p>
+    // <p>8</p>
+    // <p>9</p>
+
+    // 二
+    // var data = [4, 5, 6, 7, 8, 9]
+    // var con = d3.select('.container')
+    // var update = con.selectAll('p')
+    //   .data(data)
+
+    // update.text(function(d) {
+    //   return d
+    // })
+    // update是处理当数组长度= 元素长度时，
+    // 给原本存在的元素添加绑定数据，不存在的元素，或多出来的数组不处理
+    // 所以页面上显示的就是
+    // <p>4</p>
+    // <p>5</p>
+    
+    // 三 enter/update完整写法1
+    // var data = [4, 5, 6, 7, 8, 9]
+    // var con = d3.select('.container')
+    // var update = con.selectAll('p')
+    //   .data(data)
+
+    // var enter = update.enter()
+    //   .append('p')
+
+    // update.text(function(d) {
+    //   return d
+    // })
+
+    // 四 enter/update完整写法2
+    // var data = [4, 5, 6, 7, 8, 9]
+    // var con = d3.select('.container')
+    // var update = con.selectAll('p')
+    //   .data(data)
+    //   .call(textAttr)
+    // var enter = update.enter()
+    //   .append('p')
+    //   .call(textAttr)
+
+    // function textAttr(p) {
+    //   p.text(function(d) {
+    //     return d
+    //   })
+    // }
+
+    //五 exit
+    // var  dataset = [1]
+    // var con = d3.select('.container')
+
+    // var update = con.selectAll('p')
+    //   .data(dataset)
+
+    // var exit = update.exit().remove()
+
+    // update.text(function(d) {
+    //   return d
+    // })
+
+    //六 将enter update 和exit归纳为一个模板
+    var dataset = [10, 6, 9, 10]
+    var con = d3.select('.container').selectAll('p')
+
+    var update = con.data(dataset)
+    var enter = update.enter()
+    var exit = update.exit()
+
+    update.text(function(d) {
+      return d
+    })
+
+    enter.append('p')
+      .text(function(d) {
+        return d
+      })
+
+    exit.remove()
+
+  </script>
+</body>
+</html>

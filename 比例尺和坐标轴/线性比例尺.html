@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>线性比例尺</title>
+  <style>
+    .gX > .tick > text,
+    .gY > .tick > text {
+        font-size: 12px;
+        color：#000;
+    }
+  </style>
+</head>
+<body>
+  <div class="container"></div>
+  <script src="lib/d3.v3.min.js"></script>
+  <script>
+    var svg = d3.select('.container')
+      .append('svg')
+      .attr('width', 400)
+      .attr('height', 400)
+
+    var g = svg.append('g')
+      .attr('class', 'g')
+      .attr('transform', 'translate(50, 50)')
+
+    
+
+
+    var data = [1, 2, 4, 5, 7, 8 ,9]
+    console.log(d3.range(data.length))
+
+    var scaleX = d3.scale.linear()
+      // .domain([1, data.length])
+      .domain([0, 20])
+      // .domain([0, data.length])
+      .range([0, 300])
+      // .ticks(5)
+
+      
+
+    // var scaleY = d3.scale.linear()
+    //   .domain([0, d3.max(data)])
+    //   .range([300, 0])
+    
+    var Xaxis = d3.svg.axis()
+      .scale(scaleX)
+      .orient('bottom')
+      .ticks(8)
+      // .tickValues([3, 4, 5, 6])
+      .tickSize(8, 20)
+      .tickFormat(d3.format('<'))
+
+
+
+    // var Yaxis = d3.svg.axis()
+    //   .scale(scaleY)
+    //   .orient('left')
+
+
+    // Xaxis(gX)
+    // Yaxis(gY)
+
+    var gX = svg.append('g')
+      .attr('class', 'gX')
+      .attr('transform', 'translate(50, 350)')
+      .attr('fill', 'none')
+      .attr('stroke', 'black')
+      .attr('stroke-width', '1')
+      .call(Xaxis)
+
+    // var gY = svg.append('g')
+    //   .attr('class', 'gY')
+    //   .attr('transform', 'translate(50, 50)')
+    //   .attr('fill', 'none')
+    //   .attr('stroke', 'black')
+    //   .attr('stroke-width', '0.5')
+    //   .call(Yaxis)
+
+  </script>
+</body>
+</html>                         

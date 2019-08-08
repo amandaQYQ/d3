@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <div id="container"></div>
+  <script src="./d3.v3.min.js"></script>
+  <!-- <script src="../lib/d3.v3.min.js"></script> -->
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <script>
+    var width = 802
+    var height = 802
+    var svg = d3.select('#container')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+
+    d3.json('china.json', function(error, toporoot) {
+      var boundary = topojson.mesh(toporoot, toporoot.objects.china, function(a, b) {
+        // console.log(toporoot.objects.china)
+        // console.log(typeof a.properties.name)
+        console.log(a.properties.name === '西藏自治区')
+        // if(a.properties.name === '西藏自治区' && b.properties.name === '新疆维吾尔自治区') {
+        //   console.log(a)
+        //   console.log(b)
+        //   return a && b
+        // }
+      
+        // return a && b
+        return a.properties.name === '西藏自治区' && b.properties.name === '新疆维吾尔自治区'
+        // if(a.properties.name == '西藏自治区' && b.properties.name == '新疆维吾尔自治区') {
+        //   return a && b
+        // }
+      })
+      console.log(boundary)
+
+      svg.append('path')
+        .datum(boundary)
+        .attr('class', 'boundary')
+        .attr('d', path)
+        .attr('stroke', '#ddd')
+        .attr('stoke-width', 10)
+        .attr('fill', '#ddd')
+      // var georoot = topojson.feature(toporoot, toporoot.objects.china)
+      var georoot = topojson.feature(toporoot, toporoot.objects.china)
+      // 投影
+      var projection = d3.geo.mercator()
+        .center([107, 31])
+        .scale(600)
+        .translate([width / 2, height / 2])
+      // 地理路径生成器
+      var path = d3.geo.path()
+        .projection(projection)
+
+      var color = d3.scale.category20()
+
+      var groups = svg.append('g')
+
+      groups.selectAll('path')
+        .data(georoot.features)
+        .enter()
+        .append('path')
+        .attr('fill', function(d, i) {
+          // return color(i)
+          return '#ccc'
+        })
+        .attr('d', path)
+
+
+    })
+  </script>
+
+</body>
+</html>

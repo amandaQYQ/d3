@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>transition</title>
+</head>
+<body>
+  <div class="container"></div>
+  <script src="../lib/d3.v3.min.js"></script>
+  <script>
+    var width = 500
+    var height = 500
+    var svg = d3.select('.container')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+// 一
+  //   var rect = svg.append('rect')
+  //     .attr('width', 50)
+  //     .attr('height', 50)
+  //     .attr('fill', 'skyblue')
+  //     .attr('stroke', 'black')
+  //     .attr('stroke-width', 2)
+  //     // .transition()
+  //     // .attr('width', 100)
+  //   var rectAttr = rect.transition().attr('width', 100)
+  //     .delay(1000)
+  //     .duration(2000)
+  //     .ease('bounce')
+
+  // console.log(rect, 'rect')
+  // console.log(rectAttr, 'rectAttr')
+// 二 
+  // var rect = svg.append('rect')
+  //   .attr('x', 10)
+  //   .attr('y', 10)
+  //   .attr('width', 100)
+  //   .attr('height', 30)
+  //   .attr('fill', 'steelblue')
+
+  // var rectTran = rect.transition()
+  //   .duration(2000)
+  //   .attrTween('width', function(d, i, a) {
+  //     return function(t) {
+  //       return Number(a) + t * 300
+  //     }
+  //   })
+// 三
+  // var rect = svg.append('rect')
+  //   .attr('x', 10)
+  //   .attr('y', 10)
+  //   .attr('width', 100)
+  //   .attr('height', 30)
+  //   .style('fill', 'steelblue')
+
+  // var rectTran = rect.transition()
+  //   .delay(2000)
+  //   .duration(2000)
+  //   .style('fill', 'red')
+// 四
+  // var text = svg.append('text')
+  //   .attr('fill', 'black')
+  //   .attr('x', 50)
+  //   .attr('y', 60)
+  //   .attr('text-anchor', 'end')
+  //   .text(100)
+ 
+  // // 获取当前text的x值 50
+  // var textX = text.attr('x') 
+  // // 获取当前text的text值 100
+  // var textT = text.text()
+  
+  // var textTran = text.transition()
+  //   .duration(2000)
+  //   .tween('text', function() {
+  //     return function(t) {
+  //       d3.select(this)
+  //         .attr('x', Number(textX) + t * 300)
+  //         .text(Math.floor(Number(textT) + t * 300))
+  //     }
+  //   })
+
+// 五
+  var scaleX = d3.scale.linear()
+    .domain([0, 10])
+    .range([0, 300])
+  var axisX = d3.svg.axis()
+    .scale(scaleX)
+    .orient('bottom')
+
+  var g = svg.append('g')
+    .attr('class', 'axis')
+    .attr('transform', 'translate(50, 200)')
+    .call(axisX)
+
+  scaleX.domain([0, 50])
+
+  g.transition()
+    .ease('bounce')
+    .duration(2000)
+    .call(axisX)
+
+
+  </script>
+</body>
+</html>

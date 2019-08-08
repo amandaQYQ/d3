@@ -1,0 +1,5 @@
+.domain,.tick>line{
+	fill:none; /*不要填充*/
+	stroke:gray;
+	stroke-width:2px;
+}

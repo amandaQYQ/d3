@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="container">
+			
+		</div>
+		<script src="https://d3js.org/d3.v3.js"></script>
+		<script>
+			var data=[
+				[1,2,3,4,5],
+				[6,7,8,9,10],
+				[11,12,13,14,15],
+				['a','b','c','d','e']
+			]
+			
+			var tab=d3.select("#container")
+			.append("table")
+			.attr("width",500)
+			.attr("height",600)
+			
+			var tr=tab.selectAll("tr")
+			.data(data)
+			.enter()  //enter表示添加数据，exit表示删除
+			.append("tr")
+			
+			var td=tr.selectAll("td")
+			.data(function(a){
+				return a
+			})
+			.enter()
+			.append("td")
+			.text(function(a){
+				return a
+			})
+			
+		</script>
+	</body>
+</html>

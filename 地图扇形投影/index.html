@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container"></div>
+  <script src="./d3.v3.min.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+
+  <script>
+    var height = 800
+    var width = 800
+    var svg = d3.select('.container')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+    // 等距圆筒投影
+    // var projection = d3.geo.equirectangular()
+    //   .center([116.38, 39.93]) // 中心点被北京的经纬度
+    //   // .center([0, 51.5]) // 中心点被伦敦的经纬度
+    //   .scale(80)
+    //   // .scale(100)
+    //   .translate([width/2, height/2])
+    //   // .translate([600, 200])
+    //   .clipExtent([[0, 0], [400, height]])
+
+    // 正射投影
+    var ortho = d3.geo.orthographic()
+      .scale(130)
+      .translate([width/2, height/2])
+      .rotate([0, 0, 0])
+      .clipAngle(90)
+
+    var path = d3.geo.path()
+      // .projection(projection) //设定投影
+      .projection(ortho) //设定投影
+
+    var color = d3.scale.category20()
+
+    d3.json('word.json', function(error, root) {
+      if(error)
+        return console.error(error)
+      console.log(root)
+
+      var groups = svg.append('g')
+
+      groups.selectAll('path')
+        // .data(root.features)  
+        .data(root.geometries)   
+        .enter()
+        .append('path')
+        .attr('class', 'country')
+        .style('fill', function(d, i) {
+          return 'yellow'
+        })
+        .attr('d', path)
+
+      // var washington = projection([-77.04, 38.91])
+
+      // var pos = projection.invert(washington)
+      // console.log(pos)
+
+      // svg.append('circle')
+      //   .attr('cx', washington[0])
+      //   .attr('cy', washington[1])
+      //   .attr('r', 10)
+      //   .style('fill', 'red')
+
+    })
+  </script>
+</body>
+</html>

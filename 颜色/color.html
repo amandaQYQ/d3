@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>color</title>
+</head>
+<body>
+  <div class="container"></div>
+  <script src="../lib/d3.v3.min.js"></script>
+  <script>
+    var color1 = d3.rgb(40, 80, 0)
+    var color2 = d3.rgb('red')
+    var color3 = d3.rgb('rgb(0, 255, 255)')
+
+    console.log(color1.brighter(2), 'color1变birghter')
+    console.log(color1, 'color1本身')
+
+    console.log(color2.darker(2), 'color2变darker')
+    console.log(color2, 'color2本身')
+
+    console.log(color3.hsl(), 'color3变hsl')
+    console.log(color3, 'color3本身')
+    console.log(color3.toString(), 'color3十六进制')
+
+
+  </script>
+  
+</body>
+</html> 

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>line</title>
+</head>
+<body>
+  <div class="container"></div>
+  <script src="../lib/d3.v3.min.js"></script>
+  <script>
+    var svg = d3.select('.container').append('svg')
+      .attr({
+        'width': 400,
+   y      'height': 400
+      })
+    
+    var lines = [[80, 80], [200, 100], [200, 200], [100, 200]]
+    var linePath = d3.svg.line()
+    svg.append('path')
+      .attr('d', linePath(lines))
+      .attr('stroke', 'black')
+      .attr('stroke-width', 3)
+      .attr('fill', 'none')
+  </script>
+</body>
+</html>

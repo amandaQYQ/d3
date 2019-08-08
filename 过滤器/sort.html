@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>sort</title>
+</head>
+<body>
+  <p></p>
+  <script src="lib/d3.v3.min.js"></script>
+  <script>  
+    var data = [65, 75, 56, 34, 14, 78, 99, 36, 23, 64, 10]
+    var con = d3.select('body')
+    var update = con.selectAll('p')
+      .data(data)
+      .call(textArr)
+    var enter = update.enter()
+      .append('p')
+      .call(textArr)
+
+    var exit = update.exit()
+      .remove()
+
+    function textArr(b) {
+      b.text(function(d) {
+        return d
+      })
+    }
+
+
+  update.sort(function(a, b) {
+    // return a - b
+    return b - a
+  })
+  
+  // 或者
+  // update.sort(d3.ascending)
+  // update.sort(d3.descending)
+  </script>
+</body>
+</html>

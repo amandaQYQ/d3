@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>area</title>
+</head>
+<body>
+  <div class="container"></div>
+  <script src="../lib/d3.v3.min.js"></script>
+  <script>
+    var dataset = [80, 120, 130, 70, 60, 90]
+
+    var width = 500
+    var height = 500
+    var padding = {
+      top: 50,
+      right: 50,
+      bottom: 50,
+      left: 50
+    }
+
+    var svg = d3.select('.container')
+      .append('svg')
+      .attr({
+        'width': width,
+        'height': height
+      })
+
+    var areaPath = d3.svg.area()
+      .x(function(d, i) {
+        return 50 + i * 80
+      })
+      .y0(function(d, i) {
+        return height / 2
+      })
+      .y1(function(d, i) {
+        return height / 2 - d
+      })
+      .interpolate('step')
+
+    svg.append('path')
+      .attr('d', areaPath(dataset))
+      .attr('stroke', 'black')
+      .attr('stroke-width', 3)
+      .attr('fill', 'yellow')
+  </script>
+</body>
+</html>

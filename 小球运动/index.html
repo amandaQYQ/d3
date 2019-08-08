@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script src="../lib/d3.v3.min.js"></script>
+  <script>
+    var t0 = Date.now()
+    var t1 = Date.now()
+    var dt = t1 - t0
+
+    d3.timer(updateBall)
+
+    function(updateBall) {
+      t1 = Date.now()
+
+      dt = (t1 - t0) * 0.01
+    }
+  </script>
+</body>
+</html>

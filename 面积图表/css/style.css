@@ -1,0 +1,14 @@
+#container{
+	background:#ddd;
+	width:500px;
+	height:250px;
+}
+path{
+	fill:none;
+	stroke:#00FFFF;
+	stroke-width:2;
+}
+.domain,.tick>line{
+	stroke:black;
+	stroke-width:2px;
+}

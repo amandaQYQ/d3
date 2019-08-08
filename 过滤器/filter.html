@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>filter</title>
+</head>
+<body>
+  <script src="lib/d3.v3.min.js"></script>
+  <script src="lib/jquery.min.js"></script>
+  <script>
+    var data = [65, 75, 56, 34, 14, 78, 99, 36, 23, 64, 10]
+    var con = d3.select('body')
+    var update = con.selectAll('p')
+      .data(data)
+      .call(textArr)
+    var enter = update.enter()
+      .append('p')
+      .call(textArr)
+    var exit = update.exit()
+      .remove()
+    
+    console.log(enter)
+    update.filter(function(d, i) {
+      var p = d3.select(this)
+      if(d > 50){ 
+        // $('p').hide()   // 之前这么写出错，因为$('p')，把所有P都选中了
+        p.style('display', 'none')
+      }else{
+        p.style('display', 'block')
+      }
+    })
+
+  
+    
+    function textArr(p) {
+      p.text(function(d) {
+        return d
+      })
+    }
+
+
+  </script>
+</body>
+</html>

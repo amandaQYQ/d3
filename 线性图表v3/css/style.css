@@ -1,0 +1,14 @@
+#container{
+	width:500px;
+	height:250px;
+	background:#ddd;
+}
+path{
+	fill:none;  /*不要填充*/
+	stroke:black;  /*设置线条颜色*/
+	stroke-width:2;   /*设置线条宽度*/
+}
+.domain,.tick>line{
+	stroke:gray;
+	stroke-width:1px;
+}

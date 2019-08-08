@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>合并</title>
+</head>
+<body>
+  <div id="container"></div>
+  <script src="./d3.v3.min.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <script>
+    var width = 800
+    var height = 800
+    var svg = d3.select('#container')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+
+    d3.json('china.json', function(error, toporoot) {
+      // 东南各省
+      // var southest = d3.set([
+      //   '广东', '海南', '福建', '浙江', '江西', '江苏', '台湾', '上海', '香港', '澳门'])
+      var southest = d3.set(['澳门特别行政区', '香港特别行政区', '上海市', '天津市', '北京市', '台湾省', '海南省', '宁夏回族自治区', '重庆市', '江苏省', '浙江省', '福建省', '安徽省', '山西省', '辽宁省', '河南省', '江西省', '山东省', '贵州省', '湖北省', '河北省', '吉林省', '广东省', '陕西省', '湖南省', '广西壮族自治区', '云南省', '甘肃省', '黑龙江省', '四川省'])
+
+      var mergedPolygon = topojson.merge(toporoot, toporoot.objects.china.geometries.filter(function(d) {
+        console.log(d.properties.name)
+        return southest.has(d.properties.name)
+      }))
+
+      // console.log(mergedPolygon)
+      // 转换topojson为geojson
+      if(error)
+        return console.error(error)
+      // console.log(toporoot)
+
+      var georoot = topojson.feature(toporoot, toporoot.objects.china)
+      // console.log(georoot)
+      
+       // 定义投影 
+      var projection = d3.geo.mercator()
+        .center([107, 31])
+        .scale(600)
+        .translate([width/2, height/2])
+      // 定义地理路径生成器
+      var path = d3.geo.path()
+        .projection(projection)
+
+      var groups = svg.append('g')
+
+      groups.selectAll('path')
+        .data(georoot.features.filter(function(d) {
+          return !southest.has(d.properties.name)
+        }))
+        .enter()
+        .append('path')
+        .attr('class', 'province')
+        .style('fill', '#ccc')
+        .attr('d', path)
+      
+      // 绘制东南各省
+      svg.append('path')
+        .datum(mergedPolygon)
+        .attr('class', 'province2')
+        .style('fill', 'blue')
+        .attr('d', path)
+    })
+  </script>
+</body>
+</html>

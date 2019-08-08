@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>each</title>
+</head>
+<body>
+  <ul></ul>
+  <script src="lib/d3.v3.min.js"></script>
+  <script>
+    var data = [{id: 1, name: '小兰'},
+                {id: 2, name: '小虎'}]
+    var p = d3.select('ul')
+    var update = p.selectAll('li')
+      .data(data)
+      // .call(textArr)
+    var enter = update.enter()
+      .append('li')
+      // .call(textArr)
+    var exit = update.exit().remove()
+
+    // function textArr(a) {
+    //   a.text(function(d, i) {
+    //     return 'id:' + d.id + ',' + 'name:' + d.name
+    //   })
+    // }
+
+    update.each(function(d, i) {
+      d.age = 20
+    })
+      .text(function(d, i) {
+        return 'id:' + d.id + ',' + 'name:' + d.name + 'age:' +d.age
+      })
+  </script>
+</body>
+</html>

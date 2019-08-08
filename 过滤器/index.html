@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script src='lib/d3.v3.min.js'></script>
+  <script>
+    var persons = [{id: 100, name: '张某某', year: '1989', hometown: '北京'},
+                   {id: 101, name: '李某某', year: '1987', hometown: '北京'},
+                   {id: 102, name: '王某某', year: '1988', hometown: '上海'},
+                   {id: 103, name: '赵某某', year: '1987', hometown: '广州'},
+                   {id: 104, name: '孙某某', year: '1989', hometown: '上海'}]
+    var nest = d3.nest()
+      .key(function(d) {
+        // console.log(d, '这是d')
+        // console.log(d.year, '这是d.year')
+        return d.year
+      })
+      .sortKeys(d3.descending)
+      .key(function(d) {
+        return d.hometown
+      })
+      .entries(persons)
+
+    console.log(nest)
+
+    var personT = [{sex: '男', age: 48, name: '张某某'},
+                   {sex: '男', age: 42, name: '李某某'},
+                   {sex: '男', age: 45, name: '王某某'},
+                   {sex: '女', age: 33, name: '赵某某'},
+                   {sex: '女', age: 31, name: '孙某某'}]
+    var nestT = d3.nest()
+      .key(function(d) {
+        return d.sex
+      })
+      .sortValues(function(a, b) {
+        console.log(a, 'a')
+        console.log(b, 'b')
+        return d3.descending(a.age, b.age)
+      })
+      // .sortValues(d3.descending)
+      .entries(personT)
+    console.log(nestT)
+  </script>
+</body>
+</html>

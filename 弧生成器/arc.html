@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>arc</title>
+</head>
+<body>
+  <div class="container"></div>
+  <script src="../lib/d3.v3.min.js"></script>
+  <script>
+    // var dataset = {
+    //   startAngle: 0,
+    //   endAngle: Math.PI * 0.75
+    // }
+    
+    // var width = 500
+    // var height = 500
+    // var svg = d3.select('.container')
+    //   .append('svg')
+    //   .attr({
+    //     'width': width,
+    //     'height': height
+    //   })
+
+    // var arcPath = d3.svg.arc()
+    //   .innerRadius(50)
+    //   .outerRadius(100)
+
+    // svg.append('path')
+    //   .attr('d', arcPath(dataset))
+    //   .attr('transform', 'translate(250, 250)')
+    //   .attr('stroke', 'black')
+    //   .attr('stroke-width', 3)
+    //   .attr('fill', 'yellow')
+
+
+    var dataset = [
+                    ['小米', 60.8],
+                    ['三星', 58.4],
+                    ['联想', 47.3],
+                    ['苹果', 46.6],
+                    ['华为', 41.3],
+                    ['酷派', 40.1],
+                    ['其他', 111.5]
+                  ]
+    var width = 500
+    var height = 500
+    var padding = {
+      top: 50,
+      right: 50,
+      bottom: 50,
+      left: 50
+    }
+    var svg = d3.select('.container')
+      .append('svg')
+      .attr({
+        'width': width,
+        'height': height
+      })
+
+    // 数据处理 
+    var pie = d3.layout.pie()
+      .value(function(d) {
+        console.log(d[1])
+        return d[1]
+      })
+
+    var piedata = pie(dataset)
+
+    console.log(piedata)
+
+    var outerRadius = width / 5
+    var innerRadius = 0
+
+    var arc = d3.svg.arc()
+      .innerRadius(innerRadius)
+      .outerRadius(outerRadius)
+
+    var color = d3.scale.category20()
+
+    var gArc = svg.selectAll('g')
+      .data(piedata)
+      .enter()
+      .append('g')
+      .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
+
+    gArc.append('path')
+      .attr('fill', function(d, i) {
+        return color(i)
+      })
+      .attr('d', function(d) {
+        return arc(d)
+      })
+    
+    gArc.append('text')
+      .attr('transform', function(d) {
+        console.log(d)
+        var x = arc.centroid(d)[0]*1.4
+        var y = arc.centroid(d)[1]*1.4
+        return 'translate(' + x + ',' + y + ')'
+      })
+      .attr('text-anchor', 'middle')
+      .text(function(d) {
+        var percent = Number(d.value) / d3.sum(dataset, function(d) {return d[1]}) * 100
+        return percent.toFixed(1) + '%'
+      })
+
+
+
+
+  </script>
+</body>
+</html>
